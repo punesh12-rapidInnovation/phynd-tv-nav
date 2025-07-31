@@ -1,8 +1,9 @@
 import React, { useCallback } from 'react';
 import styled from 'styled-components';
-import { FocusContext, useFocusable } from '../index';
+import { FocusContext, useFocusable } from '@noriginmedia/norigin-spatial-navigation';
 import { SportRow } from '../components/content/SportRow';
 import { ContentRow } from '../components/content/ContentRow';
+import { Asset } from '../components/ui/Asset';
 
 const ContentWrapper = styled.div`
   flex: 1;
@@ -71,14 +72,32 @@ export function SportsPage() {
             <SportRow onAssetPress={onAssetPress} onFocus={onRowFocus} />
             <ContentRow
               title="Live Events"
-              assets={liveEvents}
-              onAssetPress={onAssetPress}
+              items={liveEvents}
+              renderItem={(item, index) => (
+                <Asset
+                  index={index}
+                  title={item.title}
+                  color={item.color}
+                  onEnterPress={onAssetPress}
+                  onFocus={() => {}}
+                  enableNavigation={true}
+                />
+              )}
               onFocus={onRowFocus}
             />
             <ContentRow
               title="Highlights"
-              assets={highlights}
-              onAssetPress={onAssetPress}
+              items={highlights}
+              renderItem={(item, index) => (
+                <Asset
+                  index={index}
+                  title={item.title}
+                  color={item.color}
+                  onEnterPress={onAssetPress}
+                  onFocus={() => {}}
+                  enableNavigation={true}
+                />
+              )}
               onFocus={onRowFocus}
             />
           </div>

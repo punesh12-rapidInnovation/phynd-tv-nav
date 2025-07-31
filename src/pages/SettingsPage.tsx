@@ -1,7 +1,8 @@
 import React, { useCallback } from 'react';
 import styled from 'styled-components';
-import { FocusContext, useFocusable } from '../index';
+import { FocusContext, useFocusable } from '@noriginmedia/norigin-spatial-navigation';
 import { ContentRow } from '../components/content/ContentRow';
+import { Asset } from '../components/ui/Asset';
 
 const ContentWrapper = styled.div`
   flex: 1;
@@ -79,20 +80,47 @@ export function SettingsPage() {
           <div>
             <ContentRow
               title="Account Settings"
-              assets={accountSettings}
-              onAssetPress={onAssetPress}
+              items={accountSettings}
+              renderItem={(item, index) => (
+                <Asset
+                  index={index}
+                  title={item.title}
+                  color={item.color}
+                  onEnterPress={onAssetPress}
+                  onFocus={() => {}}
+                  enableNavigation={true}
+                />
+              )}
               onFocus={onRowFocus}
             />
             <ContentRow
               title="Display & Audio"
-              assets={displaySettings}
-              onAssetPress={onAssetPress}
+              items={displaySettings}
+              renderItem={(item, index) => (
+                <Asset
+                  index={index}
+                  title={item.title}
+                  color={item.color}
+                  onEnterPress={onAssetPress}
+                  onFocus={() => {}}
+                  enableNavigation={true}
+                />
+              )}
               onFocus={onRowFocus}
             />
             <ContentRow
               title="System Settings"
-              assets={systemSettings}
-              onAssetPress={onAssetPress}
+              items={systemSettings}
+              renderItem={(item, index) => (
+                <Asset
+                  index={index}
+                  title={item.title}
+                  color={item.color}
+                  onEnterPress={onAssetPress}
+                  onFocus={() => {}}
+                  enableNavigation={true}
+                />
+              )}
               onFocus={onRowFocus}
             />
           </div>

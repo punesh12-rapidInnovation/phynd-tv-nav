@@ -1,8 +1,8 @@
 import styled from 'styled-components';
-import { useFocusable, type FocusableComponentLayout, type FocusDetails, type KeyPressDetails } from '../../index';
+import { useNavigate } from 'react-router-dom';
+import { useFocusable, type FocusableComponentLayout, type FocusDetails, type KeyPressDetails } from '@noriginmedia/norigin-spatial-navigation';
 
 const AssetWrapper = styled.div`
-  margin-right: 22px;
   display: flex;
   flex-direction: column;
 `;
@@ -28,26 +28,42 @@ export interface AssetProps {
   index: number;
   title: string;
   color: string;
-  onEnterPress: (props: object, details: KeyPressDetails) => void;
+  onEnterPress?: (props: object, details: KeyPressDetails) => void;
   onFocus: (
     layout: FocusableComponentLayout,
     props: object,
     details: FocusDetails
   ) => void;
+  enableNavigation?: boolean;
 }
 
 export function Asset({
+  index,
   title,
   color,
   onEnterPress,
-  onFocus
+  onFocus,
+  enableNavigation = false
 }: AssetProps) {
+  const navigate = useNavigate();
+
+  const handleEnterPress = (props: object, details: KeyPressDetails) => {
+    if (enableNavigation) {
+      // Navigate to details page with asset index as ID
+      navigate(`/details/${index}`);
+    } else if (onEnterPress) {
+      onEnterPress(props, details);
+    }
+  };
+
   const { ref, focused } = useFocusable({
-    onEnterPress,
+    focusKey: `${title}-${index}`,
+    onEnterPress: handleEnterPress,
     onFocus,
     extraProps: {
       title,
-      color
+      color,
+      index
     }
   });
 

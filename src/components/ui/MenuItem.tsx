@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { useFocusable } from '../../index';
+import { useFocusable } from '@noriginmedia/norigin-spatial-navigation';
 import { semanticBorderRadius } from '../../styles/theme/borderRadius';
 
 interface MenuItemBoxProps {

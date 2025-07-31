@@ -1,9 +1,6 @@
+import { FocusContext, useFocusable, type FocusableComponentLayout, type FocusDetails } from '@noriginmedia/norigin-spatial-navigation';
 import React, { useCallback, useRef } from 'react';
 import styled from 'styled-components';
-import { FocusContext,  type FocusableComponentLayout, type FocusDetails, type KeyPressDetails } from '../../index';
-import { Asset, type AssetProps } from '../ui/Asset';
-
-import { useFocusable } from '@noriginmedia/norigin-spatial-navigation';
 
 
 const ContentRowWrapper = styled.div`
@@ -16,7 +13,6 @@ const ContentRowTitle = styled.div`
   font-size: 27px;
   font-weight: 700;
   font-family: 'Segoe UI';
-  padding-left: 60px;
 `;
 
 const ContentRowScrollingWrapper = styled.div`
@@ -38,34 +34,38 @@ const ContentRowScrollingWrapper = styled.div`
 const ContentRowScrollingContent = styled.div`
   display: flex;
   flex-direction: row;
+  gap: 32px;
 `;
 
 interface ContentRowProps {
   title: string;
-  assets: Array<{ title: string; color: string }>;
-  onAssetPress: (props: object, details: KeyPressDetails) => void;
+  items: any[];
+  renderItem: (item: any, index: number) => React.ReactNode;
   onFocus: (
     layout: FocusableComponentLayout,
     props: object,
     details: FocusDetails
   ) => void;
+  enableNavigation?: boolean;
 }
 
 export function ContentRow({
   title: rowTitle,
-  assets,
-  onAssetPress,
-  onFocus
+  items,
+  renderItem,
+  onFocus,
+  enableNavigation = false
 }: ContentRowProps) {
   const { ref, focusKey } = useFocusable({
     onFocus,
     saveLastFocusedChild: false,
-    preferredChildFocusKey: `${rowTitle}-0`
+    preferredChildFocusKey: `${rowTitle}-0`,
+    autoRestoreFocus: true
   });
 
   const scrollingRef = useRef<HTMLDivElement>(null);
 
-  const onAssetFocus = useCallback(
+  const onItemFocus = useCallback(
     ({ x }: { x: number }) => {
       scrollingRef.current?.scrollTo({
         left: x,
@@ -81,16 +81,21 @@ export function ContentRow({
         <ContentRowTitle>{rowTitle}</ContentRowTitle>
         <ContentRowScrollingWrapper ref={scrollingRef}>
           <ContentRowScrollingContent>
-            {assets.map(({ title, color }, index) => (
-              <Asset
-                index={index}
-                title={title}
-                key={`${rowTitle}-${index}`}
-                color={color}
-                onEnterPress={onAssetPress}
-                onFocus={onAssetFocus}
-              />
-            ))}
+            {items?.map((item, index) => {
+              // Clone the rendered item and inject the onFocus callback
+              const renderedItem = renderItem(item, index);
+              if (React.isValidElement(renderedItem)) {
+                return React.cloneElement(renderedItem, {
+                  key: `${rowTitle}-${index}`,
+                  onFocus: onItemFocus
+                } as any);
+              }
+              return (
+                <React.Fragment key={`${rowTitle}-${index}`}>
+                  {renderedItem}
+                </React.Fragment>
+              );
+            })}
           </ContentRowScrollingContent>
         </ContentRowScrollingWrapper>
       </ContentRowWrapper>

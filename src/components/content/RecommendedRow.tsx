@@ -1,6 +1,7 @@
 import React from 'react';
 import { ContentRow } from './ContentRow';
 import { type KeyPressDetails, type FocusableComponentLayout, type FocusDetails } from '../../index';
+import { Asset } from '../ui';
 
 const recommendedAssets = [
   { title: 'Recommended Asset 1', color: '#714ADD' },
@@ -23,8 +24,17 @@ export function RecommendedRow({ onAssetPress, onFocus }: RecommendedRowProps) {
   return (
     <ContentRow
       title="Recommended"
-      assets={recommendedAssets}
-      onAssetPress={onAssetPress}
+      items={recommendedAssets}
+      renderItem={(item, index) => (
+        <Asset
+          index={index}
+          title={item.title}
+          color={item.color}
+          onEnterPress={onAssetPress}
+          onFocus={() => { }} // Empty function for individual card focus
+          enableNavigation={true}
+        />
+      )}
       onFocus={onFocus}
     />
   );

@@ -4,10 +4,11 @@
  */
 
 import React, { useState } from 'react';
+import { MemoryRouter, Routes, Route, useLocation } from 'react-router-dom';
 import { ThemeProvider } from 'styled-components';
-import { init } from './lib/spatial-navigation';
+import { init } from '@noriginmedia/norigin-spatial-navigation';
 import { Layout } from './components/layout';
-import { HomePage, MoviesPage, SeriesPage, SportsPage, SettingsPage } from './pages';
+import { HomePage, MoviesPage, SeriesPage, SportsPage, SettingsPage, DetailsPage } from './pages';
 import { darkTheme } from './styles/theme/darkTheme';
 
 init({
@@ -18,11 +19,17 @@ init({
 
 
 
-export function App() {
+function AppContent() {
   const [currentPage, setCurrentPage] = useState('home');
-const handleNavigate = (page: string) => {
-  setCurrentPage(page);
-};
+  const location = useLocation();
+  
+  // Check if we're on a details page
+  const isDetailsPage = location.pathname.startsWith('/details/');
+  
+  const handleNavigate = (page: string) => {
+    setCurrentPage(page);
+  };
+
   const renderCurrentPage = () => {
     switch (currentPage) {
       case 'home':
@@ -45,18 +52,43 @@ const handleNavigate = (page: string) => {
     console.log('Profile clicked');
   };
 
+  // If we're on a details page, render it without the layout
+  if (isDetailsPage) {
+    return (
+      <Routes>
+        <Route path="/details/:assetId" element={<DetailsPage />} />
+      </Routes>
+    );
+  }
+
+  return (
+    <Layout
+      currentPage={currentPage}
+      onNavigate={handleNavigate}
+      onProfileClick={handleProfileClick}
+      userName="John Doe"
+      userInitials="JD"
+    >
+      <Routes>
+        <Route path="/" element={renderCurrentPage()} />
+        <Route path="/home" element={<HomePage />} />
+        {/* Commented out other page routes for now */}
+         <Route path="/movies" element={<MoviesPage />} />
+         <Route path="/series" element={<SeriesPage />} />
+         <Route path="/sports" element={<SportsPage />} />
+         <Route path="/settings" element={<SettingsPage />} />
+      </Routes>
+    </Layout>
+  );
+}
+
+export function App() {
   return (
     <React.StrictMode>
       <ThemeProvider theme={darkTheme}>
-        <Layout
-          currentPage={currentPage}
-          onNavigate={handleNavigate}
-          onProfileClick={handleProfileClick}
-          userName="John Doe"
-          userInitials="JD"
-        >
-          {renderCurrentPage()}
-        </Layout>
+        <MemoryRouter initialEntries={['/']}>
+          <AppContent />
+        </MemoryRouter>
       </ThemeProvider>
     </React.StrictMode>
   );

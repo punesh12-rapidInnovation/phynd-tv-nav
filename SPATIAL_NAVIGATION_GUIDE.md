@@ -31,7 +31,7 @@ Our TV navigation system uses spatial navigation to allow users to navigate thro
 The `useFocusable` hook is the foundation of our spatial navigation system:
 
 ```typescript
-import { useFocusable, FocusContext } from '../../index';
+import { useFocusable, FocusContext } from '@noriginmedia/norigin-spatial-navigation';
 
 const { ref, focused, focusKey } = useFocusable({
   focusKey: 'UNIQUE_KEY',           // Unique identifier
@@ -57,7 +57,7 @@ Use `FocusContext.Provider` to create focus boundaries and manage child componen
 ### Simple Focusable Component
 
 ```typescript
-import { useFocusable } from '../../index';
+import { useFocusable } from '@noriginmedia/norigin-spatial-navigation';
 
 function FocusableButton({ title, onPress }) {
   const { ref, focused } = useFocusable({

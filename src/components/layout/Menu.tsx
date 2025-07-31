@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import styled from 'styled-components';
-import { FocusContext, useFocusable } from '../../index';
+import { FocusContext, useFocusable } from '@noriginmedia/norigin-spatial-navigation';
 import { MenuItem } from '../ui/MenuItem';
 
 interface MenuWrapperProps {
@@ -58,9 +58,10 @@ export function Menu({ focusKey: focusKeyParam, currentPage, onNavigate }: MenuP
     extraProps: { foo: 'bar' }
   });
 
-  useEffect(() => {
-    focusSelf();
-  }, [focusSelf]);
+  // Removed automatic focus on mount to allow content to receive initial focus
+  // useEffect(() => {
+  //   focusSelf();
+  // }, [focusSelf]);
 
   // Menu is expanded when any child has focus
   const isExpanded = hasFocusedChild;

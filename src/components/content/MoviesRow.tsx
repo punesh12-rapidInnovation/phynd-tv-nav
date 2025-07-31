@@ -1,6 +1,7 @@
 import React from 'react';
 import { ContentRow } from './ContentRow';
-import { type KeyPressDetails, type FocusableComponentLayout, type FocusDetails } from '../../index';
+import { Asset } from '../ui/Asset';
+import { type KeyPressDetails, type FocusableComponentLayout, type FocusDetails } from '@noriginmedia/norigin-spatial-navigation';
 
 const moviesAssets = [
   { title: 'Action Movie 1', color: '#FF6B6B' },
@@ -24,8 +25,17 @@ export function MoviesRow({ onAssetPress, onFocus }: MoviesRowProps) {
   return (
     <ContentRow
       title="Movies"
-      assets={moviesAssets}
-      onAssetPress={onAssetPress}
+      items={moviesAssets}
+      renderItem={(item, index) => (
+        <Asset
+          index={index}
+          title={item.title}
+          color={item.color}
+          onEnterPress={onAssetPress}
+          onFocus={() => {}} // Empty function for individual card focus
+          enableNavigation={true}
+        />
+      )}
       onFocus={onFocus}
     />
   );

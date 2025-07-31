@@ -1,8 +1,9 @@
 import React, { useCallback } from 'react';
 import styled from 'styled-components';
-import { FocusContext, useFocusable } from '../index';
+import { FocusContext, useFocusable } from '@noriginmedia/norigin-spatial-navigation';
 import { MoviesRow } from '../components/content/MoviesRow';
 import { ContentRow } from '../components/content/ContentRow';
+import { Asset } from '../components/ui/Asset';
 
 const ContentWrapper = styled.div`
   flex: 1;
@@ -71,14 +72,32 @@ export function MoviesPage() {
             <MoviesRow onAssetPress={onAssetPress} onFocus={onRowFocus} />
             <ContentRow
               title="Action Movies"
-              assets={actionMovies}
-              onAssetPress={onAssetPress}
+              items={actionMovies}
+              renderItem={(item, index) => (
+                <Asset
+                  index={index}
+                  title={item.title}
+                  color={item.color}
+                  onEnterPress={onAssetPress}
+                  onFocus={() => {}}
+                  enableNavigation={true}
+                />
+              )}
               onFocus={onRowFocus}
             />
             <ContentRow
               title="Comedy Movies"
-              assets={comedyMovies}
-              onAssetPress={onAssetPress}
+              items={comedyMovies}
+              renderItem={(item, index) => (
+                <Asset
+                  index={index}
+                  title={item.title}
+                  color={item.color}
+                  onEnterPress={onAssetPress}
+                  onFocus={() => {}}
+                  enableNavigation={true}
+                />
+              )}
               onFocus={onRowFocus}
             />
           </div>

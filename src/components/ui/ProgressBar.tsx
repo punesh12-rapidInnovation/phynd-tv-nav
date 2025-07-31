@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
-import { useFocusable } from '../index';
+import { useFocusable } from '@noriginmedia/norigin-spatial-navigation';
 
 interface ProgressBarWrapperProps {
   $focused: boolean;

@@ -1,6 +1,6 @@
 import React, { useCallback, useState } from 'react';
 import styled from 'styled-components';
-import { FocusContext, useFocusable, type KeyPressDetails } from '../../index';
+import { FocusContext, useFocusable, type KeyPressDetails } from '@noriginmedia/norigin-spatial-navigation';
 import { ProgressBar } from '../ui/ProgressBar';
 import { RecommendedRow } from './RecommendedRow';
 import { MoviesRow } from './MoviesRow';

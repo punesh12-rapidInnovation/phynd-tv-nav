@@ -1,8 +1,9 @@
 import React, { useCallback } from 'react';
 import styled from 'styled-components';
-import { FocusContext, useFocusable } from '../index';
+import { FocusContext, useFocusable } from '@noriginmedia/norigin-spatial-navigation';
 import { SeriesRow } from '../components/content/SeriesRow';
 import { ContentRow } from '../components/content/ContentRow';
+import { Asset } from '../components/ui/Asset';
 
 const ContentWrapper = styled.div`
   flex: 1;
@@ -71,14 +72,32 @@ export function SeriesPage() {
             <SeriesRow onAssetPress={onAssetPress} onFocus={onRowFocus} />
             <ContentRow
               title="Netflix Originals"
-              assets={netflixSeries}
-              onAssetPress={onAssetPress}
+              items={netflixSeries}
+              renderItem={(item, index) => (
+                <Asset
+                  index={index}
+                  title={item.title}
+                  color={item.color}
+                  onEnterPress={onAssetPress}
+                  onFocus={() => {}}
+                  enableNavigation={true}
+                />
+              )}
               onFocus={onRowFocus}
             />
             <ContentRow
               title="HBO Series"
-              assets={hboSeries}
-              onAssetPress={onAssetPress}
+              items={hboSeries}
+              renderItem={(item, index) => (
+                <Asset
+                  index={index}
+                  title={item.title}
+                  color={item.color}
+                  onEnterPress={onAssetPress}
+                  onFocus={() => {}}
+                  enableNavigation={true}
+                />
+              )}
               onFocus={onRowFocus}
             />
           </div>

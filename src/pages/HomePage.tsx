@@ -1,12 +1,14 @@
 import React, { useCallback } from 'react';
 import styled from 'styled-components';
-import { FocusContext, useFocusable } from '../index';
+import { FocusContext, useFocusable } from '@noriginmedia/norigin-spatial-navigation';
 import { RecommendedRow } from '../components/content/RecommendedRow';
+import { TrendingRow } from '../components/content/TrendingRow';
 import { MoviesRow } from '../components/content/MoviesRow';
 import { SeriesRow } from '../components/content/SeriesRow';
 import { TVChannelsRow } from '../components/content/TVChannelsRow';
 import { SportRow } from '../components/content/SportRow';
 import { ContentRow } from '../components/content/ContentRow';
+import { Asset } from '../components/ui/Asset';
 
 const ContentWrapper = styled.div`
   flex: 1;
@@ -24,14 +26,6 @@ const ScrollingRows = styled.div`
 `;
 
 // Additional content data for HomePage
-const trendingContent = [
-  { title: 'Trending Now 1', color: '#FF6B6B' },
-  { title: 'Trending Now 2', color: '#4ECDC4' },
-  { title: 'Trending Now 3', color: '#45B7D1' },
-  { title: 'Trending Now 4', color: '#96CEB4' },
-  { title: 'Trending Now 5', color: '#FFEAA7' },
-  { title: 'Trending Now 6', color: '#DDA0DD' },
-];
 
 const newReleases = [
   { title: 'New Release 1', color: '#FF7675' },
@@ -64,12 +58,17 @@ export function HomePage() {
   const { ref, focusKey, focusSelf } = useFocusable({
     focusable: true,
     autoRestoreFocus: true,
-    trackChildren: true
+    trackChildren: true,
+    preferredChildFocusKey: 'Recommended-0'
   });
 
-  // Focus the page when it mounts
+  // Focus the page when it mounts and set focus to first item
   React.useEffect(() => {
-    focusSelf();
+    const timer = setTimeout(() => {
+      focusSelf();
+    }, 1500); // Longer delay to wait for RecommendedRow data to load (800ms API + buffer)
+    
+    return () => clearTimeout(timer);
   }, [focusSelf]);
 
   const onAssetPress = useCallback((asset: object) => {
@@ -92,31 +91,53 @@ export function HomePage() {
         <ScrollingRows ref={ref}>
           <div>
             <RecommendedRow onAssetPress={onAssetPress} onFocus={onRowFocus} />
-            <ContentRow
-              title="Trending Now"
-              assets={trendingContent}
-              onAssetPress={onAssetPress}
-              onFocus={onRowFocus}
-            />
+            <TrendingRow onFocus={onRowFocus} />
             <MoviesRow onAssetPress={onAssetPress} onFocus={onRowFocus} />
             <ContentRow
               title="New Releases"
-              assets={newReleases}
-              onAssetPress={onAssetPress}
+              items={newReleases}
+              renderItem={(item, index) => (
+                <Asset
+                  index={index}
+                  title={item.title}
+                  color={item.color}
+                  onEnterPress={onAssetPress}
+                  onFocus={() => {}} // Empty function for individual card focus
+                  enableNavigation={true}
+                />
+              )}
               onFocus={onRowFocus}
             />
             <SeriesRow onAssetPress={onAssetPress} onFocus={onRowFocus} />
             <ContentRow
               title="Popular Content"
-              assets={popularContent}
-              onAssetPress={onAssetPress}
+              items={popularContent}
+              renderItem={(item, index) => (
+                <Asset
+                  index={index}
+                  title={item.title}
+                  color={item.color}
+                  onEnterPress={onAssetPress}
+                  onFocus={() => {}} // Empty function for individual card focus
+                  enableNavigation={true}
+                />
+              )}
               onFocus={onRowFocus}
             />
             <TVChannelsRow onAssetPress={onAssetPress} onFocus={onRowFocus} />
             <ContentRow
               title="Continue Watching"
-              assets={continueWatching}
-              onAssetPress={onAssetPress}
+              items={continueWatching}
+              renderItem={(item, index) => (
+                <Asset
+                  index={index}
+                  title={item.title}
+                  color={item.color}
+                  onEnterPress={onAssetPress}
+                  onFocus={() => {}} // Empty function for individual card focus
+                  enableNavigation={true}
+                />
+              )}
               onFocus={onRowFocus}
             />
             <SportRow onAssetPress={onAssetPress} onFocus={onRowFocus} />
