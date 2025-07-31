@@ -9,6 +9,7 @@ import { TVChannelsRow } from '../components/content/TVChannelsRow';
 import { SportRow } from '../components/content/SportRow';
 import { ContentRow } from '../components/content/ContentRow';
 import { Asset } from '../components/ui/Asset';
+import { GameTile } from '../shared/gameTile';
 
 const ContentWrapper = styled.div`
   flex: 1;
@@ -54,6 +55,45 @@ const continueWatching = [
   { title: 'Continue 6', color: '#00CEC9' },
 ];
 
+const featuredGames = [
+  {
+    name: 'The Last of Us Part II',
+    starRating: 1.5,
+    esrbRating: 'M',
+    imageUrl: 'https://picsum.photos/428/240?random=1'
+  },
+  {
+    name: 'God of War',
+    starRating: 2.8,
+    esrbRating: 'M',
+    imageUrl: 'https://picsum.photos/428/240?random=2'
+  },
+  {
+    name: 'Spider-Man: Miles Morales',
+    starRating: 3.3,
+    esrbRating: 'T',
+    imageUrl: 'https://picsum.photos/428/240?random=3'
+  },
+  {
+    name: 'Horizon Zero Dawn',
+    starRating: 4.6,
+    esrbRating: 'T',
+    imageUrl: 'https://picsum.photos/428/240?random=4'
+  },
+  {
+    name: 'Ghost of Tsushima',
+    starRating: 4.4,
+    esrbRating: 'M',
+    imageUrl: 'https://picsum.photos/428/240?random=5'
+  },
+  {
+    name: 'Ratchet & Clank',
+    starRating: 4.2,
+    esrbRating: 'E10+',
+    imageUrl: 'https://picsum.photos/428/240?random=6'
+  }
+];
+
 export function HomePage() {
   const { ref, focusKey, focusSelf } = useFocusable({
     focusable: true,
@@ -90,6 +130,23 @@ export function HomePage() {
       <ContentWrapper>
         <ScrollingRows ref={ref}>
           <div>
+
+               <ContentRow
+              title="Featured Games"
+              items={featuredGames}
+              renderItem={(item, index) => (
+                <GameTile
+                  index={index}
+                  name={item.name}
+                  starRating={item.starRating}
+                  esrbRating={item.esrbRating}
+                  imageUrl={item.imageUrl}
+                  onEnterPress={onAssetPress}
+                  onFocus={() => {}}
+                />
+              )}
+              onFocus={onRowFocus}
+            />
             <RecommendedRow onAssetPress={onAssetPress} onFocus={onRowFocus} />
             <TrendingRow onFocus={onRowFocus} />
             <MoviesRow onAssetPress={onAssetPress} onFocus={onRowFocus} />
@@ -140,6 +197,7 @@ export function HomePage() {
               )}
               onFocus={onRowFocus}
             />
+         
             <SportRow onAssetPress={onAssetPress} onFocus={onRowFocus} />
           </div>
         </ScrollingRows>
