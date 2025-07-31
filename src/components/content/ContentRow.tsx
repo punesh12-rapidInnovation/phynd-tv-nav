@@ -1,7 +1,10 @@
 import React, { useCallback, useRef } from 'react';
 import styled from 'styled-components';
-import { FocusContext, useFocusable, type FocusableComponentLayout, type FocusDetails, type KeyPressDetails } from '../../index';
+import { FocusContext,  type FocusableComponentLayout, type FocusDetails, type KeyPressDetails } from '../../index';
 import { Asset, type AssetProps } from '../ui/Asset';
+
+import { useFocusable } from '@noriginmedia/norigin-spatial-navigation';
+
 
 const ContentRowWrapper = styled.div`
   margin-bottom: 37px;
@@ -21,7 +24,15 @@ const ContentRowScrollingWrapper = styled.div`
   overflow-y: hidden;
   flex-shrink: 1;
   flex-grow: 1;
-  padding-left: 60px;
+  
+  /* Hide scrollbar for Chrome, Safari and Opera */
+  &::-webkit-scrollbar {
+    display: none;
+  }
+  
+  /* Hide scrollbar for IE, Edge and Firefox */
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
 `;
 
 const ContentRowScrollingContent = styled.div`

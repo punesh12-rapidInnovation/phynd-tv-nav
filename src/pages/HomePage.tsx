@@ -13,7 +13,7 @@ const ContentWrapper = styled.div`
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  padding-top: 20px;
+  padding: 20px;
 `;
 
 const ScrollingRows = styled.div`

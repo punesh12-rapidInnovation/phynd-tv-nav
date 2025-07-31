@@ -13,8 +13,8 @@ interface AssetBoxProps {
 }
 
 const AssetBox = styled.div<AssetBoxProps>`
-  width: 325px;
-  height: 250px;
+ width: 428px;
+height: 240px;
   background-color: ${({ color }) => color};
   border-color: white;
   border-style: solid;

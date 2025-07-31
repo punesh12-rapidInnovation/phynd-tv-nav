@@ -15,8 +15,8 @@ const MenuWrapper = styled.div<MenuWrapperProps>`
   display: flex;
   flex-direction: column;
   align-items: center;
-  background-color: ${({ $hasFocusedChild }) =>
-    $hasFocusedChild ? '#4e4181' : '#362C56'};
+  background-color: ${({ $hasFocusedChild, theme }) =>
+    $hasFocusedChild ? theme.surfaceSecondaryOpacity60 : theme.surfaceSecondaryOpacity40};
   padding-top: 37px;
   transition: max-width 0.3s ease, min-width 0.3s ease;
 `;
@@ -48,7 +48,7 @@ export function Menu({ focusKey: focusKeyParam, currentPage, onNavigate }: MenuP
     autoRestoreFocus: true,
     isFocusBoundary: false,
     focusKey: focusKeyParam,
-    preferredChildFocusKey: undefined,
+    preferredChildFocusKey: `MENU_ITEM_${currentPage.toUpperCase()}`,
     onEnterPress: () => {},
     onEnterRelease: () => {},
     onArrowPress: () => true,
@@ -75,6 +75,7 @@ export function Menu({ focusKey: focusKeyParam, currentPage, onNavigate }: MenuP
             expanded={isExpanded}
             isActive={currentPage === item.page}
             iconType={item.iconType}
+            focusKey={`MENU_ITEM_${item.page.toUpperCase()}`}
             onSelect={() => onNavigate(item.page)}
           />
         ))}

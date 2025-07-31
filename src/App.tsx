@@ -4,10 +4,11 @@
  */
 
 import React, { useState } from 'react';
-import styled, { createGlobalStyle } from 'styled-components';
+import { ThemeProvider } from 'styled-components';
 import { init } from './lib/spatial-navigation';
-import { Menu, TopNavbar } from './components/layout';
+import { Layout } from './components/layout';
 import { HomePage, MoviesPage, SeriesPage, SportsPage, SettingsPage } from './pages';
+import { darkTheme } from './styles/theme/darkTheme';
 
 init({
   debug: false,
@@ -16,34 +17,12 @@ init({
 });
 
 
-const AppContainer = styled.div`
-  background-color: #221c35;
-  width: 1920px;
-  height: 1080px;
-  display: flex;
-  flex-direction: column;
-`;
-
-const MainContent = styled.div`
-  display: flex;
-  flex-direction: row;
-  flex: 1;
-  height: calc(1080px - 80px);
-`;
-
-const GlobalStyle = createGlobalStyle`
-  ::-webkit-scrollbar {
-    display: none;
-  }
-`;
 
 export function App() {
   const [currentPage, setCurrentPage] = useState('home');
-
-  const handleNavigate = (page: string) => {
-    setCurrentPage(page);
-  };
-
+const handleNavigate = (page: string) => {
+  setCurrentPage(page);
+};
   const renderCurrentPage = () => {
     switch (currentPage) {
       case 'home':
@@ -68,18 +47,17 @@ export function App() {
 
   return (
     <React.StrictMode>
-      <AppContainer>
-        <GlobalStyle />
-        <TopNavbar
+      <ThemeProvider theme={darkTheme}>
+        <Layout
+          currentPage={currentPage}
+          onNavigate={handleNavigate}
+          onProfileClick={handleProfileClick}
           userName="John Doe"
           userInitials="JD"
-          onProfileClick={handleProfileClick}
-        />
-        <MainContent>
-          <Menu focusKey="MENU" currentPage={currentPage} onNavigate={handleNavigate} />
+        >
           {renderCurrentPage()}
-        </MainContent>
-      </AppContainer>
+        </Layout>
+      </ThemeProvider>
     </React.StrictMode>
   );
 }
