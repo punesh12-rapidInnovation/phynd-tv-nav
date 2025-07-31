@@ -1,5 +1,6 @@
 import React, { useCallback } from 'react';
 import styled from 'styled-components';
+import { useNavigate } from 'react-router-dom';
 import { FocusContext, useFocusable } from '@noriginmedia/norigin-spatial-navigation';
 import { RecommendedRow } from '../components/content/RecommendedRow';
 import { TrendingRow } from '../components/content/TrendingRow';
@@ -111,9 +112,13 @@ export function HomePage() {
     return () => clearTimeout(timer);
   }, [focusSelf]);
 
-  const onAssetPress = useCallback((asset: object) => {
-    // Handle asset press
-  }, []);
+  const navigate = useNavigate();
+
+  const onAssetPress = useCallback((asset: any) => {
+    // Handle asset press - navigate to details page with asset ID
+    const assetId = asset.index || Math.random().toString(36).substr(2, 9);
+    navigate(`/details/${assetId}`);
+  }, [navigate]);
 
   const onRowFocus = useCallback(
     ({ y }: { y: number }) => {

@@ -3,8 +3,8 @@
  * Disabling ESLint rules for these dependencies since we know it is only for development purposes
  */
 
-import React, { useState } from 'react';
-import { MemoryRouter, Routes, Route, useLocation } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { MemoryRouter, Routes, Route, useLocation, useNavigate } from 'react-router-dom';
 import { ThemeProvider } from 'styled-components';
 import { init } from '@noriginmedia/norigin-spatial-navigation';
 import { Layout } from './components/layout';
@@ -22,6 +22,7 @@ init({
 function AppContent() {
   const [currentPage, setCurrentPage] = useState('home');
   const location = useLocation();
+  const navigate = useNavigate();
   
   // Check if we're on a details page
   const isDetailsPage = location.pathname.startsWith('/details/');
@@ -29,6 +30,31 @@ function AppContent() {
   const handleNavigate = (page: string) => {
     setCurrentPage(page);
   };
+
+  // Handle back button events
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      // Handle TV remote back button (key code 10009) and fallback keys
+      if (event.keyCode === 10009 || event.key === 'Escape' || event.key === 'Backspace') {
+        event.preventDefault();
+        
+
+          // If on details page, go back to the main app
+          navigate('/');
+          // If on main pages, you could implement app exit logic here
+          // For now, we'll just log it
+          console.log('Back button pressed on main page - could exit app');
+      }
+    };
+
+    // Add event listener
+    window.addEventListener('keydown', handleKeyDown);
+
+    // Cleanup
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [ navigate]);
 
   const renderCurrentPage = () => {
     switch (currentPage) {
@@ -85,11 +111,11 @@ function AppContent() {
 export function App() {
   return (
     <React.StrictMode>
-      <ThemeProvider theme={darkTheme}>
-        <MemoryRouter initialEntries={['/']}>
+      <MemoryRouter initialEntries={['/']}>
+        <ThemeProvider theme={darkTheme}>
           <AppContent />
-        </MemoryRouter>
-      </ThemeProvider>
+        </ThemeProvider>
+      </MemoryRouter>
     </React.StrictMode>
   );
 }

@@ -82,12 +82,13 @@ export function ContentRow({
         <ContentRowScrollingWrapper ref={scrollingRef}>
           <ContentRowScrollingContent>
             {items?.map((item, index) => {
-              // Clone the rendered item and inject the onFocus callback
+              // Clone the rendered item and inject the onFocus callback and totalItems
               const renderedItem = renderItem(item, index);
               if (React.isValidElement(renderedItem)) {
                 return React.cloneElement(renderedItem, {
                   key: `${rowTitle}-${index}`,
-                  onFocus: onItemFocus
+                  onFocus: onItemFocus,
+                  totalItems: items.length
                 } as any);
               }
               return (

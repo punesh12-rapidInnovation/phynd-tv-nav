@@ -22,7 +22,7 @@ const StyledCardBox = styled.div<CardBoxProps>`
   background-repeat: no-repeat;
   border-color: white;
   border-style: solid;
-  border-width: ${({ focused }) => (focused ? '6px' : 0)};
+  border-width: ${({ focused }) => (focused ? '4px' : 0)};
   box-sizing: border-box;
   border-radius: ${({ borderRadius }) => borderRadius || '7px'};
   position: relative;
